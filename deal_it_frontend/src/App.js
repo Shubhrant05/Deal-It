@@ -1,8 +1,9 @@
 import './App.css';
+import Authentication_Page from './components/authentication';
 function App() {
   return (
     <div className="App">
-      <h1 className='text-red-500'>Starting...</h1>
+      <Authentication_Page/>
     </div>
   );
 }
