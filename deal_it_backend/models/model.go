@@ -5,17 +5,17 @@ import (
 )
 
 type Student struct {
-	ID            primitive.ObjectID `json:"_id" bson:"_id"`
-	RollNo        string             `json:"roll_no"`
-	Name          string             `json:"name"`
-	EmailId       string             `json:"email"`
-	MobileNo      string             `json:"contact_number"`
+	ID            primitive.ObjectID `bson:"_id,omitempty"`
+	RollNo        string             `json:"rollno,omitempty"`
+	Name          string             `json:"name,omitempty"`
+	Email         string             `json:"email,omitempty"`
+	MobileNo      string             `json:"contact,omitempty"`
 	Password      string             `json:"password"`
-	Notifications []string           `json:"notification"`
+	Notifications []string           `json:"notification,omitempty"`
 }
 
 type Complaints struct {
-	ID          primitive.ObjectID `json:"_id" bson:"_id"`
+	ID          primitive.ObjectID ` bson:"_id"`
 	Subject     string             `json:"complaint_title"`
 	Description string             `json:"description"`
 	Date        string             `json:"date"`
@@ -27,7 +27,7 @@ type Complaints struct {
 }
 
 type Caretaker struct {
-	ID            primitive.ObjectID `json:"_id" bson:"_id"`
+	ID            primitive.ObjectID ` bson:"_id"`
 	Name          string             `json:"caretaker_name"`
 	EmailId       string             `json:"email"`
 	Password      string             `json:"password"`

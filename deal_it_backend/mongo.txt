@@ -1,0 +1,3 @@
+username=dealit
+pass=dealit
+url=mongodb+srv://dealit:dealit@cluster0.xlb9egg.mongodb.net/?retryWrites=true&w=majority
