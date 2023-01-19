@@ -4,19 +4,19 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
-	"net/http"
-
 	"github.com/Shubhrant05/Deal-It/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
+	"net/http"
 )
 
 var database *mongo.Database
 var studentCollection *mongo.Collection
 var complaintsCollection *mongo.Collection
 var caretakerCollection *mongo.Collection
+
 // Creating Controllers
 func Connection(connUrl string) {
 	newClient := options.Client().ApplyURI(connUrl)
@@ -99,9 +99,57 @@ func RegisterStudent(w http.ResponseWriter, r *http.Request) {
 		}
 
 		json.NewEncoder(w).Encode(insertData.InsertedID)
-	}else{
+	} else {
 		json.NewEncoder(w).Encode("User already exists!")
 	}
 
 }
 
+func PostComplaint(w http.ResponseWriter, r *http.Request) {
+	var data models.Complaints
+	err := json.NewDecoder(r.Body).Decode(&data)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	r.ParseForm()
+	hash := data.Category + data.HallName + data.RaisedBy.Email
+	data.Hash = hash
+	var newComplaint models.Complaints
+	filter := bson.D{{"hash", hash}}
+	existingComplaint := complaintsCollection.FindOne(context.Background(), filter).Decode(&newComplaint)
+	if existingComplaint != nil {
+		insertData, err := complaintsCollection.InsertOne(context.Background(), data)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		json.NewEncoder(w).Encode(insertData.InsertedID)
+	} else {
+		json.NewEncoder(w).Encode("User already exists!")
+	}
+}
+
+func GetAllDueComplaints(w http.ResponseWriter, r *http.Request) {
+	var dueComplaints []models.Complaints
+	filter := bson.D{{"isresolved", false}}
+	data, err := complaintsCollection.Find(context.Background(), filter)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for data.Next(context.Background()) {
+		var complaints models.Complaints
+		err := data.Decode(&complaints)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		dueComplaints = append(dueComplaints, complaints)
+	}
+
+	json.NewEncoder(w).Encode(dueComplaints)
+}

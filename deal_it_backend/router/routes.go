@@ -6,10 +6,12 @@ import (
 )
 
 func Router() *mux.Router {
-	router:=mux.NewRouter()
-	router.HandleFunc("/",controllers.HomePage).Methods("GET")
-	router.HandleFunc("/login",controllers.VerifyUser).Methods("POST")
-	router.HandleFunc("/getUsers",controllers.GetAllUsers).Methods("GET")
-	router.HandleFunc("/signup",controllers.RegisterStudent).Methods("POST")
+	router := mux.NewRouter()
+	router.HandleFunc("/", controllers.HomePage).Methods("GET")
+	router.HandleFunc("/login", controllers.VerifyUser).Methods("POST")
+	router.HandleFunc("/getUsers", controllers.GetAllUsers).Methods("GET")
+	router.HandleFunc("/signup", controllers.RegisterStudent).Methods("POST")
+	router.HandleFunc("/duecomplaints", controllers.GetAllDueComplaints).Methods("GET")
+	router.HandleFunc("/newcomplaint", controllers.PostComplaint).Methods("POST")
 	return router
 }
