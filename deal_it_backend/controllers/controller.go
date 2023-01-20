@@ -62,6 +62,7 @@ func VerifyUser(w http.ResponseWriter, r *http.Request) {
 	var credentials models.Student
 	err := json.NewDecoder(r.Body).Decode(&credentials)
 	// fmt.Println(credentials)
+	resp := make(map[string]string)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -69,15 +70,23 @@ func VerifyUser(w http.ResponseWriter, r *http.Request) {
 	filter := bson.D{{"email", credentials.Email}}
 	err = studentCollection.FindOne(context.Background(), filter).Decode(&data)
 	if err != nil {
+		resp["status"] = "404"
+		resp["message"] = "Signup Unsuccessful"
 		json.NewEncoder(w).Encode("User doesn't exists!")
 	} else {
 		if data.Password == credentials.Password {
+			resp["status"] = "200"
+			resp["message"] = "Success"
 			json.NewEncoder(w).Encode("Login Successfull!")
 			json.NewEncoder(w).Encode(data)
 		} else {
+			resp["status"] = "401"
+			resp["message"] = "Signup Unsuccessful"
 			json.NewEncoder(w).Encode("Wrong Passsword!")
 		}
 	}
+	res, err := json.Marshal(resp)
+	w.Write(res)
 }
 
 // Controller for registering new user
@@ -85,6 +94,7 @@ func RegisterStudent(w http.ResponseWriter, r *http.Request) {
 	var data models.Student
 	err := json.NewDecoder(r.Body).Decode(&data)
 	// json.NewEncoder(w).Encode(data)
+	resp := make(map[string]string)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -97,21 +107,30 @@ func RegisterStudent(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 			return
 		}
-
+		resp["status"] = "200"
+		resp["message"] = "Authorized"
 		json.NewEncoder(w).Encode(insertData.InsertedID)
 	} else {
+		resp["status"] = "401"
+		resp["message"] = "Unauthorized"
 		json.NewEncoder(w).Encode("User already exists!")
 	}
+	res, err := json.Marshal(resp)
 
+	w.Write(res)
 }
 
+// Controller to post new complaint
 func PostComplaint(w http.ResponseWriter, r *http.Request) {
 	var data models.Complaints
 	err := json.NewDecoder(r.Body).Decode(&data)
-
+	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	resp := make(map[string]string)
+
 	r.ParseForm()
 	hash := data.Category + data.HallName + data.RaisedBy.Email
 	data.Hash = hash
@@ -124,13 +143,19 @@ func PostComplaint(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 			return
 		}
-
+		resp["status"] = "200"
+		resp["message"] = "Success"
 		json.NewEncoder(w).Encode(insertData.InsertedID)
 	} else {
 		json.NewEncoder(w).Encode("User already exists!")
+		resp["status"] = "401"
+		resp["message"] = "User already exists!"
 	}
+	res, err := json.Marshal(resp)
+	w.Write(res)
 }
 
+// Controller to get all due complaints
 func GetAllDueComplaints(w http.ResponseWriter, r *http.Request) {
 	var dueComplaints []models.Complaints
 	filter := bson.D{{"isresolved", false}}
@@ -138,6 +163,7 @@ func GetAllDueComplaints(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Fatal(err)
+		w.WriteHeader(404)
 	}
 
 	for data.Next(context.Background()) {
