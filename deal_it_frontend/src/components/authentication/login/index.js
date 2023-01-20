@@ -13,7 +13,7 @@ function Login() {
     "email": "",
     "password": "",
   });
-
+  const [user,setUser]=useState()
   const updateCredentials = (e) => {
     setCredentials({
       ...credentials,
@@ -22,8 +22,14 @@ function Login() {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-    await axios.post(`${ENDPOINT}/login`,JSON.stringify(credentials)).then((res)=>console.log(res)).catch((err)=>console.log(err))
-    
+    await axios.post(`${ENDPOINT}/login`,JSON.stringify(credentials)).then((res)=>{console.log(res)
+    setUser(res.data)}).catch((err)=>console.log(err))
+    console.log(user)
+    if(user===200){
+      sessionStorage.setItem("Email",credentials.email)
+    }else{
+      alert("Invalid Credentials!")
+    }
     // window.location.reload();
   };
   return (

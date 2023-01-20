@@ -6,14 +6,18 @@ import {CiUser} from "react-icons/ci"
 import {MdOutlineDriveFileRenameOutline,MdMail} from "react-icons/md"
 import {RiLockPasswordLine,RiContactsBook2Line} from "react-icons/ri"
 
+import axios from "axios"
+
+const ENDPOINT="http://localhost:4000"
+
 function Signup() {
   const [userData, setUserData] = useState({
-    "rollnumber": "",
+    "rollno": "",
     "name":"",
     "email": "",
-    "createPass": "",
+    "password": "",
     "confirmPass": "",
-    "contact":""
+    "mobileno":""
   });
   const updateData = (e) => {
     setUserData({
@@ -23,7 +27,8 @@ function Signup() {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(userData);
+    // console.log(userData);
+    await axios.post(`${ENDPOINT}/signup`,JSON.stringify(userData)).then((res)=>console.log(res)).catch((err)=>console.log(err))
     // window.location.reload();
   };
   return (
@@ -33,7 +38,7 @@ function Signup() {
                     <CiUser className="h-full w-full" />
                   </div>
                   <div className="w-4/5 ">
-                    <input type="text" name="rollnumber"  placeholder="Enter roll number" className="w-full h-full text-lg italic text-black" style={{background:"none"}}  onChange={updateData} />
+                    <input type="text" name="rollno"  placeholder="Enter roll number" className="w-full h-full text-lg italic text-black" style={{background:"none"}}  onChange={updateData} />
                   </div>
                 </div>
                 <div className="w-full h-12  p-2 flex rounded-3xl" style={{backgroundColor:"rgb(244,248,247)"}}>
@@ -57,7 +62,7 @@ function Signup() {
                     <RiLockPasswordLine className="h-full w-full" />
                   </div>
                   <div className="w-4/5 ">
-                    <input type="password" name="createPass" placeholder="Create password" className="w-full h-full text-lg italic" style={{background:"none"}} onChange={updateData}/>
+                    <input type="password" name="password" placeholder="Create password" className="w-full h-full text-lg italic" style={{background:"none"}} onChange={updateData}/>
                   </div>
                 </div>
                 <div className="w-full h-12  p-2 flex rounded-3xl" style={{backgroundColor:"rgb(244,248,247)"}}>
@@ -73,7 +78,7 @@ function Signup() {
                     <RiContactsBook2Line className="h-full w-full" />
                   </div>
                   <div className="w-4/5 ">
-                    <input type="text" name="contact" placeholder="Enter Contact Number" className="w-full h-full text-lg italic" style={{background:"none"}} onChange={updateData}/>
+                    <input type="text" name="mobileno" placeholder="Enter Contact Number" className="w-full h-full text-lg italic" style={{background:"none"}} onChange={updateData}/>
                   </div>
                 </div>
                 <div className="w-full h-12  p-2 flex rounded-3xl justify-center" style={{backgroundColor:"rgb(58,177,155)"}}>

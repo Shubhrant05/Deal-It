@@ -65,7 +65,7 @@ func VerifyUser(w http.ResponseWriter, r *http.Request) {
 	var credentials models.Student
 	err := json.NewDecoder(r.Body).Decode(&credentials)
 	// fmt.Println(credentials)
-	resp := make(map[string]string)
+	// resp := make(map[string]string)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -73,27 +73,28 @@ func VerifyUser(w http.ResponseWriter, r *http.Request) {
 	filter := bson.D{{"email", credentials.Email}}
 	err = studentCollection.FindOne(context.Background(), filter).Decode(&data)
 	if err != nil {
-		resp["status"] = "404"
-		resp["message"] = "Signup Unsuccessful"
-		json.NewEncoder(w).Encode("User doesn't exists!")
+		// resp["status"] = "404"
+		// resp["message"] = "Signup Unsuccessful"
+		json.NewEncoder(w).Encode(401)
 	} else {
 		if data.Password == credentials.Password {
-			resp["status"] = "200"
-			resp["message"] = "Success"
-			json.NewEncoder(w).Encode("Login Successfull!")
-			json.NewEncoder(w).Encode(data)
+			// resp["status"] = "200"
+			// resp["message"] = "Success"
+			// json.NewEncoder(w).Encode("Login Successfull!")
+			json.NewEncoder(w).Encode(200)
 		} else {
-			resp["status"] = "401"
-			resp["message"] = "Signup Unsuccessful"
-			json.NewEncoder(w).Encode("Wrong Passsword!")
+			// resp["status"] = "401"
+			// resp["message"] = "Signup Unsuccessful"
+			json.NewEncoder(w).Encode(400)
 		}
 	}
-	res, err := json.Marshal(resp)
-	w.Write(res)
+	// res, err := json.Marshal(resp)
+	// w.Write(res)
 }
 
 // Controller for registering new user
 func RegisterStudent(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	var data models.Student
 	err := json.NewDecoder(r.Body).Decode(&data)
 	// json.NewEncoder(w).Encode(data)
