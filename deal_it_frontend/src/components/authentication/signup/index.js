@@ -2,14 +2,18 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {AiOutlineEye,AiOutlineEyeInvisible} from "react-icons/ai"
+import {CiUser} from "react-icons/ci"
+import {MdOutlineDriveFileRenameOutline,MdMail} from "react-icons/md"
+import {RiLockPasswordLine,RiContactsBook2Line} from "react-icons/ri"
 
 function Signup() {
-    const [showPassword,setShowPassword]=useState(false)
-    const [showConfirmPassword,setShowConfirmPassword]=useState(false)
   const [userData, setUserData] = useState({
-    "rollNumber": "",
+    "rollnumber": "",
+    "name":"",
     "email": "",
-    "password": "",
+    "createPass": "",
+    "confirmPass": "",
+    "contact":""
   });
   const updateData = (e) => {
     setUserData({
@@ -23,60 +27,61 @@ function Signup() {
     // window.location.reload();
   };
   return (
-    <Form>
-      <Form.Group className="mb-3" controlId="formBasicRollNo">
-        <Form.Label>Roll Number</Form.Label>
-        <div className="flex gap-2 border-2 border-gray-200 rounded-md p-2">
-
-        <Form.Control
-          name="rollNumber"
-          type="text"
-          placeholder="Roll No"
-          onChange={updateData}
-        />
-        </div>
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Email address</Form.Label>
-        <div className="flex gap-2 border-2 border-gray-200 rounded-md p-2">
-        <Form.Control
-          name="email"
-          type="email"
-          placeholder="Enter email"
-          onChange={updateData}
-        />
-        </div>
-        
-      </Form.Group>
-
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Create Password</Form.Label>
-        <div className="flex gap-2 border-2 border-gray-200 rounded-md p-2">
-        <Form.Control
-          name="newpassword"
-          type={showPassword?"text":"password"}
-          placeholder="Create Password"
-          onChange={updateData}
-        />
-        <i onClick={()=>setShowPassword(prev=>!prev)}>{showPassword?<AiOutlineEye className="h-12" />:<AiOutlineEyeInvisible className="h-12"/>}</i>
-        </div>
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formConfirmPassword">
-        <Form.Label>Confirm Password</Form.Label>
-        <div className="flex gap-2 border-2 border-gray-200 rounded-md p-2">
-        <Form.Control
-          name="confirmpassword"
-          type={showConfirmPassword?"text":"password"}
-          placeholder="Confirm Password"
-          onChange={updateData}
-        />
-        <i onClick={()=>setShowConfirmPassword(prev=>!prev)}>{showConfirmPassword?<AiOutlineEye className="h-12" />:<AiOutlineEyeInvisible className="h-12"/>}</i>
-        </div>
-      </Form.Group>
-      <Button variant="primary" type="submit" onClick={submitHandler}>
-        Signup
-      </Button>
-    </Form>
+    <form className=" h-5/6 flex flex-col gap-3 p-10">
+                <div className="w-full h-12  p-2 flex rounded-3xl" style={{backgroundColor:"rgb(244,248,247)"}}>
+                  <div className=" w-1/6 p-2">
+                    <CiUser className="h-full w-full" />
+                  </div>
+                  <div className="w-4/5 ">
+                    <input type="text" name="rollnumber"  placeholder="Enter roll number" className="w-full h-full text-lg italic text-black" style={{background:"none"}}  onChange={updateData} />
+                  </div>
+                </div>
+                <div className="w-full h-12  p-2 flex rounded-3xl" style={{backgroundColor:"rgb(244,248,247)"}}>
+                  <div className=" w-1/6 p-2 ">
+                    <MdOutlineDriveFileRenameOutline className="h-full w-full" />
+                  </div>
+                  <div className="w-4/5 ">
+                    <input type="text" name="name" placeholder="Enter fullname" className="w-full h-full text-lg italic" style={{background:"none"}}  onChange={updateData} />
+                  </div>
+                </div>
+                <div className="w-full h-12  p-2 flex rounded-3xl" style={{backgroundColor:"rgb(244,248,247)"}}>
+                <div className=" w-1/6 p-2">
+                    <MdMail className="h-full w-full" />
+                  </div>
+                  <div className="w-4/5 ">
+                    <input type="text" name="email" placeholder="Enter EmailID" className="w-full h-full text-lg italic" style={{background:"none"}}  onChange={updateData} />
+                  </div>
+                </div>
+                <div className="w-full h-12  p-2 flex rounded-3xl" style={{backgroundColor:"rgb(244,248,247)"}}>
+                  <div className=" w-1/6 p-2">
+                    <RiLockPasswordLine className="h-full w-full" />
+                  </div>
+                  <div className="w-4/5 ">
+                    <input type="password" name="createPass" placeholder="Create password" className="w-full h-full text-lg italic" style={{background:"none"}} onChange={updateData}/>
+                  </div>
+                </div>
+                <div className="w-full h-12  p-2 flex rounded-3xl" style={{backgroundColor:"rgb(244,248,247)"}}>
+                  <div className=" w-1/6 p-2">
+                    <RiLockPasswordLine className="h-full w-full" />
+                  </div>
+                  <div className="w-4/5 ">
+                    <input type="password" name="confirmPass" placeholder="Confirm password" className="w-full h-full text-lg italic" style={{background:"none"}}   onChange={updateData}/>
+                  </div>
+                </div>
+                <div className="w-full h-12  p-2 flex rounded-3xl" style={{backgroundColor:"rgb(244,248,247)"}}>
+                  <div className=" w-1/6 p-2">
+                    <RiContactsBook2Line className="h-full w-full" />
+                  </div>
+                  <div className="w-4/5 ">
+                    <input type="text" name="contact" placeholder="Enter Contact Number" className="w-full h-full text-lg italic" style={{background:"none"}} onChange={updateData}/>
+                  </div>
+                </div>
+                <div className="w-full h-12  p-2 flex rounded-3xl justify-center" style={{backgroundColor:"rgb(58,177,155)"}}>
+                  <button className="text-center" onClick={submitHandler}>SignUp</button>
+                </div>
+                
+                
+              </form>
   );
 }
 

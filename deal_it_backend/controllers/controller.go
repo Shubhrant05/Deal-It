@@ -36,7 +36,9 @@ func Connection(connUrl string) {
 func HomePage(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("<h1>Welcome to deal-it backend!</h1>"))
 }
-
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	}
 // Controller for getting all users
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	var users []models.Student
@@ -59,6 +61,7 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 
 // Controller for verifying login credentials
 func VerifyUser(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	var credentials models.Student
 	err := json.NewDecoder(r.Body).Decode(&credentials)
 	// fmt.Println(credentials)

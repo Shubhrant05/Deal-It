@@ -1,15 +1,38 @@
 import { useState } from "react";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
 import Login from "./login";
 import Signup from "./signup";
 
-function Authentication_Page() {
-  const [isLoginOpen, setIsLoginOpen] = useState(true);
+function LgScreen() {
+  
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  return (
+    <div className="hidden lg:flex w-full rounded-2xl shadow-2xl">
+          <div
+            className="w-1/2 p-4 text-white italic rounded-l-2xl shadow-2xl"
+            style={{ backgroundColor: "rgb(58,177,155)" }}
+          >
+            <iframe src="https://embed.lottiefiles.com/animation/38435" className="w-full h-full"></iframe>
+          </div>
+
+          <div className="w-1/2 p-12 shadow-2xl rounded-r-2xl">
+            <div className=" flex flex-col gap-1  h-full ">
+              <div className=" text-center h-1/10">
+                <h1 className="" style={{ color: "rgb(58,177,155)" }}>
+                  {!isLoginOpen?"Create Account":"Login"}
+                </h1>
+              </div>
+              {!isLoginOpen?<Signup/>:<Login/>}
+              <div className="flex justify-end text-blue-600"><button className="italic" onClick={()=>setIsLoginOpen(prev=>!prev)}>{isLoginOpen?"If you don't have an account click here":"If you already have an account please login"}</button></div>
+            </div>
+          </div>
+        </div>
+  )
+}
+function SmScreen() {
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const myStyle = {
     backgroundImage:
-      "url('https://cache.careers360.mobi/media/colleges/reviews/2020/10/3/142538/iiit.jpg')",
+      "url('https://www.sme-news.co.uk/wp-content/uploads/2021/11/Login.jpg')",
     height: "100vh",
     // marginTop:'-50px',
     // fontSize:'50px',
@@ -17,27 +40,39 @@ function Authentication_Page() {
     backgroundRepeat: "no-repeat",
   };
   return (
+    <div className="flex w-full rounded-2xl shadow-2xl lg:hidden">
+          {/* <div
+            className="w-full p-4 text-white italic rounded-l-2xl shadow-2xl"
+            style={{ backgroundColor: "rgb(58,177,155)" }}
+          >
+            <iframe src="https://embed.lottiefiles.com/animation/38435" className="w-full h-full"></iframe>
+          </div> */}
+
+          <div className="w-full p-8 shadow-2xl rounded-r-2xl">
+            <div className=" flex flex-col gap-1  h-full ">
+              <div className=" text-center h-1/10">
+                <h1 className="" style={{ color: "rgb(58,177,155)" }}>
+                  {!isLoginOpen?"Create Account":"Login"}
+                </h1>
+              </div>
+              {!isLoginOpen?<Signup/>:<Login/>}
+              <div className="flex justify-end text-blue-600"><button className="italic" onClick={()=>setIsLoginOpen(prev=>!prev)}>{isLoginOpen?"If you don't have an account click here":"If you already have an account please login"}</button></div>
+            </div>
+          </div>
+        </div>
+  )
+}
+
+function Authentication_Page() {
+  return (
     <>
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Container fluid>
-        <Navbar.Brand href="#home">Deal-It</Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav" className='justify-content-end'>
-          <Nav className="md:flex gap-3">
-            <button className=" bg-red-500 p-1 rounded-md" onClick={()=>setIsLoginOpen(true)}>Login</button>
-            <button className="bg-red-500 p-1 rounded-md" onClick={()=>setIsLoginOpen(false)}>Signup</button>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-    {/* <div className='flex gap-2 mt-2 justify-center w-3/4'>
-    
-    </div> */}
-    <div className="flex justify-center  mt-10 container">
-    <div className='w-full lg:w-1/2 border-2 border-red-200 p-10'>
-    {isLoginOpen?<Login/>:<Signup/>}
-</div>
-    </div>
+      <div
+        className="w-full flex justify-center p-10 "
+        style={{ height: "100vh" }}
+      >
+        <LgScreen/>
+        <SmScreen/>
+      </div>
     </>
   );
 }
