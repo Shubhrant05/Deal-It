@@ -7,10 +7,12 @@ import {MdOutlineDriveFileRenameOutline,MdMail} from "react-icons/md"
 import {RiLockPasswordLine,RiContactsBook2Line} from "react-icons/ri"
 
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
 
 const ENDPOINT="http://localhost:4000"
 
 function Signup() {
+  const navigate = useNavigate()
   const [userData, setUserData] = useState({
     "rollno": "",
     "name":"",
@@ -30,6 +32,7 @@ function Signup() {
     // console.log(userData);
     await axios.post(`${ENDPOINT}/signup`, JSON.stringify(userData)).then((res) => {
       console.log(res)
+      navigate("/dashboard")
     }).catch((err) => console.log(err))
     // window.location.reload();
   };

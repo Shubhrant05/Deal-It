@@ -10,3 +10,13 @@ input[type="text"]:focus , input[type="password"]:focus,input[type="email"]:focu
 .navbar-header{
     box-shadow: 5px 5px 5px antiquewhite;
 }
+.complaint-btn{
+    margin-right: 1rem;
+    background: "rgb(58,177,155)";
+    font-weight: 600;
+}
+.complaint-btn:hover{
+    background: white;
+    border-color:"rgb(58,177,155)";
+    color:"rgb(58,177,155)";
+}

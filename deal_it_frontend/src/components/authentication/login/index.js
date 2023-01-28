@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useNavigate} from 'react-router-dom'
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { CiUser } from "react-icons/ci";
@@ -9,6 +10,7 @@ import axios from "axios"
 const ENDPOINT="http://localhost:4000"
 
 function Login() {
+  const navigate = useNavigate()
   const [credentials, setCredentials] = useState({
     "email": "",
     "password": "",
@@ -26,7 +28,8 @@ function Login() {
     setUser(res.data)}).catch((err)=>console.log(err))
     console.log(user)
     if(user===200){
-      sessionStorage.setItem("Email",credentials.email)
+      sessionStorage.setItem("Email", credentials.email)
+      navigate("/dashboard")
     }else{
       alert("Invalid Credentials!")
     }

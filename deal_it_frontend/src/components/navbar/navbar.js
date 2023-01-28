@@ -1,7 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import NewComplaint from '../form_modal/NewComplaint';
-
+import {CgProfile} from 'react-icons/cg'
 function NavbarHeader() {
   return (
     <Navbar>
@@ -10,8 +10,9 @@ function NavbarHeader() {
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text>
-            <NewComplaint/>
-            Signed in as: <a href="#login">Mark Otto</a>
+            <div className='flex justify-between'>
+              <NewComplaint /><a href="#login"><span style={{fontSize:"2rem"}}><CgProfile /></span></a>
+              </div>
           </Navbar.Text>
         </Navbar.Collapse>
       </Container>
