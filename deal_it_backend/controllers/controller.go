@@ -38,7 +38,8 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 }
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-	}
+}
+
 // Controller for getting all users
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	var users []models.Student
@@ -160,9 +161,10 @@ func PostComplaint(w http.ResponseWriter, r *http.Request) {
 }
 
 // Controller to get all due complaints
-func GetAllDueComplaints(w http.ResponseWriter, r *http.Request) {
+func GetAllComplaints(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	var dueComplaints []models.Complaints
-	filter := bson.D{{"isresolved", false}}
+	filter := bson.D{{}}
 	data, err := complaintsCollection.Find(context.Background(), filter)
 
 	if err != nil {

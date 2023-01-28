@@ -67,7 +67,7 @@ function Authentication_Page() {
   return (
     <>
       <div
-        className="w-full flex justify-center p-10 "
+        className="w-full flex justify-center p-4 "
         style={{ height: "100vh" }}
       >
         <LgScreen/>

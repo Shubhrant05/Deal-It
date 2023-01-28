@@ -10,7 +10,7 @@ import axios from "axios"
 
 const ENDPOINT="http://localhost:4000"
 
-function Signup() {
+function ComplaintForm() {
   const [userData, setUserData] = useState({
     "rollno": "",
     "name":"",
@@ -92,4 +92,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default ComplaintForm;

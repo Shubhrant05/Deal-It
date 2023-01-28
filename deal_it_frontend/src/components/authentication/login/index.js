@@ -43,7 +43,7 @@ function Login() {
         </div>
         <div className="w-4/5 ">
           <input
-            type="text"
+            type="email"
             name="email"
             placeholder="Enter EmailID"
             className="w-full h-full text-lg italic"
