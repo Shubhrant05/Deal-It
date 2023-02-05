@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { CiUser } from "react-icons/ci";
@@ -7,7 +7,7 @@ import { MdOutlineDriveFileRenameOutline, MdMail } from "react-icons/md";
 import { RiLockPasswordLine, RiContactsBook2Line } from "react-icons/ri";
 import axios from "axios"
 
-const ENDPOINT="http://localhost:4000"
+const ENDPOINT = "http://localhost:4000"
 
 function Login() {
   const navigate = useNavigate()
@@ -15,7 +15,7 @@ function Login() {
     "email": "",
     "password": "",
   });
-  const [user,setUser]=useState()
+  const [user, setUser] = useState()
   const updateCredentials = (e) => {
     setCredentials({
       ...credentials,
@@ -24,15 +24,28 @@ function Login() {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-    await axios.post(`${ENDPOINT}/login`,JSON.stringify(credentials)).then((res)=>{console.log(res)
-    setUser(res.data)}).catch((err)=>console.log(err))
-    console.log(user)
-    if(user===200){
-      sessionStorage.setItem("Email", credentials.email)
-      navigate("/dashboard")
-    }else{
-      alert("Invalid Credentials!")
+    try {
+      let res = await axios.post(`${ENDPOINT}/login`, JSON.stringify(credentials))
+      // .then((res) => {
+      //   console.log(res)
+        setUser(res.data)
+      // })
+      // .catch((err) => console.log(err))
+      console.log(res)
+      setUser((data) => {
+        if (data === 200) {
+          sessionStorage.setItem("Email", credentials.email)
+          navigate("/dashboard")
+        } else {
+          alert("Invalid Credentials!")
+        }
+        return data
+      })
+    } catch (err) {
+      console.log(err)
     }
+
+
     // window.location.reload();
   };
   return (
