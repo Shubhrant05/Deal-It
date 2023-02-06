@@ -32,7 +32,7 @@ function Signup() {
     // console.log(userData);
     await axios.post(`${ENDPOINT}/signup`, JSON.stringify(userData)).then((res) => {
       console.log(res)
-      navigate("/dashboard")
+      navigate("/login")
     }).catch((err) => console.log(err))
     // window.location.reload();
   };

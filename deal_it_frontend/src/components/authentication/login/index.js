@@ -1,21 +1,19 @@
 import { useState } from "react";
-import {useNavigate} from 'react-router-dom'
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import { CiUser } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 import { MdOutlineDriveFileRenameOutline, MdMail } from "react-icons/md";
 import { RiLockPasswordLine, RiContactsBook2Line } from "react-icons/ri";
-import axios from "axios"
+import axios from "axios";
 
-const ENDPOINT="http://localhost:4000"
+const ENDPOINT = "http://localhost:4000";
 
 function Login() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
-    "email": "",
-    "password": "",
+    email: "",
+    password: "",
+    topping:""
   });
-  const [user,setUser]=useState()
+  const [user, setUser] = useState();
   const updateCredentials = (e) => {
     setCredentials({
       ...credentials,
@@ -24,14 +22,19 @@ function Login() {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-    await axios.post(`${ENDPOINT}/login`,JSON.stringify(credentials)).then((res)=>{console.log(res)
-    setUser(res.data)}).catch((err)=>console.log(err))
-    console.log(user)
-    if(user===200){
-      sessionStorage.setItem("Email", credentials.email)
-      navigate("/dashboard")
-    }else{
-      alert("Invalid Credentials!")
+    await axios
+      .post(`${ENDPOINT}/login`, JSON.stringify(credentials))
+      .then((res) => {
+        console.log(res);
+        setUser(res.data);
+      })
+      .catch((err) => console.log(err));
+    console.log(user);
+    if (user === 200) {
+      sessionStorage.setItem("Email", credentials.email);
+      navigate("/dashboard");
+    } else {
+      alert("Invalid Credentials!");
     }
     // window.location.reload();
   };
@@ -73,12 +76,42 @@ function Login() {
           />
         </div>
       </div>
+      <div
+        className="w-full h-12  p-2 flex rounded-3xl "
+        style={{ backgroundColor: "rgb(244,248,247)" }}
+      >
+        {/* <p>Are you a student or caretaker?</p> */}
+        <div className=" w-1/2 container">
+          <input
+            type="radio"
+            name="topping"
+            value="student"
+            id="regular"
+            // checked={topping === "Regular"}
+            // onChange={onOptionChange}
+          />
+          <label htmlFor="regular" className="ml-3">Student</label>
+        </div>
+        <div className="w-1/2 container">
+        <input
+            type="radio"
+            name="topping"
+            value="caretaker"
+            id="regular"
+            // checked={topping === "Regular"}
+            // onChange={onOptionChange}
+          />
+          <label htmlFor="regular" className="ml-3">Caretaker</label>
+        </div>
+      </div>
 
       <div
         className="w-full h-12  p-2 flex rounded-3xl justify-center"
         style={{ backgroundColor: "rgb(58,177,155)" }}
       >
-        <button className="text-center" onClick={submitHandler}>Login</button>
+        <button className="text-center" onClick={submitHandler}>
+          Login
+        </button>
       </div>
     </form>
   );
