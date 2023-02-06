@@ -32,7 +32,7 @@ function Complaints({ ...props }) {
 //   console.log(data);
   return (
     <>
-      <section className="flex flex-col gap-3">
+      <section className="flex flex-col gap-3 mt-5">
         {data.map((ele) => {
           return (
             <Accordion defaultActiveKey="0" className="w-full">
