@@ -66,7 +66,7 @@ func VerifyUser(w http.ResponseWriter, r *http.Request) {
 	var credentials models.Student
 	err := json.NewDecoder(r.Body).Decode(&credentials)
 	// fmt.Println(credentials)
-	// resp := make(map[string]string)
+	resp := make(map[string]string)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -82,7 +82,11 @@ func VerifyUser(w http.ResponseWriter, r *http.Request) {
 			// resp["status"] = "200"
 			// resp["message"] = "Success"
 			// json.NewEncoder(w).Encode("Login Successfull!")
-			json.NewEncoder(w).Encode(200)
+			resp["status"]="200"
+			resp["name"]=data.Name
+			json.NewEncoder(w).Encode(resp)
+			// json.NewEncoder(w).Encode()
+			
 		} else {
 			// resp["status"] = "401"
 			// resp["message"] = "Signup Unsuccessful"
@@ -127,9 +131,10 @@ func RegisterStudent(w http.ResponseWriter, r *http.Request) {
 
 // Controller to post new complaint
 func PostComplaint(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	var data models.Complaints
 	err := json.NewDecoder(r.Body).Decode(&data)
-	w.Header().Set("Content-Type", "application/json")
+	// w.Header().Set("Content-Type", "application/json")
 	if err != nil {
 		log.Fatal(err)
 	}
