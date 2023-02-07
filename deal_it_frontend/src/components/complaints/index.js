@@ -23,12 +23,12 @@ const Dashboard = () => {
 
     useEffect(() => {
       getData()
-    }, [])
+    }, [data])
     
      let newdata = data?.filter(ele => ele.isresolved === false)?.filter(ele => ele.raisedby.email === sessionStorage.getItem("Email"))
   return (
       <div>
-          <NavbarHeader />
+          <NavbarHeader display={true}/>
 
           {
               newdata.length >0 ? <div style={{ textAlign: "center" }} className='text-2xl lg:text-6xl m-3'>Here are all your <span style={{ color: "rgb(58,177,155)" }}>due complaints</span></div> : <div style={{ textAlign: "center" }} className='text-2xl lg:text-6xl m-3'>No <span style={{ color: "rgb(58,177,155)" }}>due complaints</span></div>

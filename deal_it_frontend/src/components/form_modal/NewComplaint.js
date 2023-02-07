@@ -5,17 +5,17 @@ import {MyVerticallyCenteredModal} from './FormModal'
 
 
 
-const NewComplaint = () => {
+const NewComplaint = (props) => {
   const [modalShow, setModalShow] = useState(false);
   return (
     <>
-      <Button id='new-complaint' onClick={() => setModalShow(true)}
+      {props.show?<Button id='new-complaint' onClick={() => setModalShow(true)}
         style={{
           
         }}
         >
     + New Complain
-    </Button>
+    </Button>:<></>}
 
   <MyVerticallyCenteredModal
     show={modalShow}

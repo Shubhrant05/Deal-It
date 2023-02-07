@@ -7,12 +7,17 @@ import axios from "axios";
 
 const ENDPOINT = "http://localhost:4000";
 
-function ComplaintForm() {
+function ComplaintForm(props) {
   const [userData, setUserData] = useState({
-    hallno: "",
+    subject:"Complaint",
+    hallname: "",
     category:"",
     roomno: "",
-    complaint: "",
+    raisedby:{
+      email:sessionStorage.getItem("Email")
+    },
+    description: "",
+    date:new Date().toLocaleDateString("en-US")
   });
   const updateData = (e) => {
     setUserData({
@@ -33,15 +38,15 @@ function ComplaintForm() {
   };
   return (
     
-    <form>
-      <Form.Select aria-label="Default select example" name="hallno" onChange={updateData}>
+    <form onSubmit={submitHandler}> 
+      <Form.Select aria-label="Default select example" name="hallname" onChange={updateData}>
       <option>Select Hostel Name</option>
       <option value="aryabhatta">Aryabhatta Hostel</option>
       <option value="vashishta">Vashishta Hostel</option>
       <option value="vivekananda">Vivekananda Hostel</option>
       <option value="saraswati">Saraswati Hostel</option>
     </Form.Select>
-      <Form.Select aria-label="Default select example" name="category" onChange={updateData}>
+      <Form.Select aria-label="Default select example" name="category" onChange={updateData} className="mb-3 mt-3">
       <option>Select Complaint Category</option>
       <option value="plumbing">Plumbing</option>
       <option value="electricity">Electricity</option>
@@ -58,13 +63,13 @@ function ComplaintForm() {
       <FloatingLabel controlId="floatingTextarea2" label="Complaint">
         <Form.Control
           as="textarea"
-          name="complaint"
+          name="description"
           placeholder="Enter your complaint here..."
           style={{ height: '100px' }}
           onChange={updateData}
         />
       </FloatingLabel>
-      <Button variant="primary" type="submit" className="mt-5" onClick={submitHandler}>
+      <Button variant="primary" type="submit" className="mt-5" onClick={props.hide}>
         Submit Complaint
       </Button>
     </form>

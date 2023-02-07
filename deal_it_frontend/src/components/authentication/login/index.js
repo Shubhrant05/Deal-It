@@ -28,12 +28,14 @@ function Login() {
       // .then((res) => {
       //   console.log(res)
         setUser(res.data)
+        // console.log(user)
       // })
       // .catch((err) => console.log(err))
       console.log(res)
       setUser((data) => {
-        if (data === 200) {
+        if (data.status === '200') {
           sessionStorage.setItem("Email", credentials.email)
+          sessionStorage.setItem("Name",data.name)
           navigate("/dashboard")
         } else {
           alert("Invalid Credentials!")
@@ -95,7 +97,7 @@ function Login() {
             type="radio"
             name="topping"
             value="student"
-            id="regular"
+            id="regular1"
             // checked={topping === "Regular"}
             // onChange={onOptionChange}
           />
@@ -106,7 +108,7 @@ function Login() {
             type="radio"
             name="topping"
             value="caretaker"
-            id="regular"
+            id="regular2"
             // checked={topping === "Regular"}
             // onChange={onOptionChange}
           />

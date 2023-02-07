@@ -17,7 +17,7 @@ export const MyVerticallyCenteredModal = (props) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ComplaintForm/>
+          <ComplaintForm hide={props.onHide}/>
         </Modal.Body>
       </Modal>
     );
