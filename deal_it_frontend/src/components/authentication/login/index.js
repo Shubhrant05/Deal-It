@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdMail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
+import {ToastContainer, toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 
 const ENDPOINT = "http://localhost:4000";
@@ -24,21 +26,39 @@ function Login() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      let res = await axios.post(`${ENDPOINT}/login`, JSON.stringify(credentials))
-      // .then((res) => {
-      //   console.log(res)
+      // if (credentials.topping==="student"){
+
+      // }
+      let res = await axios.post(`${ENDPOINT}/${credentials.topping==="student"?"login":"caretaker"}`, JSON.stringify(credentials))
         setUser(res.data)
-        // console.log(user)
-      // })
-      // .catch((err) => console.log(err))
       console.log(res)
       setUser((data) => {
         if (data.status === '200') {
           sessionStorage.setItem("Email", credentials.email)
           sessionStorage.setItem("Name",data.name)
-          navigate("/dashboard")
-        } else {
-          alert("Invalid Credentials!")
+          sessionStorage.setItem("Person",credentials.topping )
+          // {credentials.topping==="caretaker"?sessionStorage.setItem("Hallname",data.hallname):null}
+          if(credentials.topping==="caretaker"){
+            sessionStorage.setItem("Hallname",data.hallname)
+          }
+          toast.success("Login Successfull",{
+            hideProgressBar:true
+          })
+          
+          
+          setTimeout(()=>{
+            if(credentials.topping==="student"){
+              navigate("/dashboard")
+            }
+            else{
+              navigate("/caretaker")
+            }
+          },1000)
+        } else if(data.status==='401') {
+          toast.error("Invalid Credentials!",{
+            hideProgressBar:true
+          })
+          
         }
         return data
       })
@@ -47,7 +67,6 @@ function Login() {
     }
 
 
-    // window.location.reload();
   };
   return (
     <form className=" h-5/6 flex flex-col gap-3 p-10">
@@ -98,8 +117,7 @@ function Login() {
             name="topping"
             value="student"
             id="regular1"
-            // checked={topping === "Regular"}
-            // onChange={onOptionChange}
+            onChange={updateCredentials}
           />
           <label htmlFor="regular" className="ml-3">Student</label>
         </div>
@@ -109,8 +127,7 @@ function Login() {
             name="topping"
             value="caretaker"
             id="regular2"
-            // checked={topping === "Regular"}
-            // onChange={onOptionChange}
+            onChange={updateCredentials}
           />
           <label htmlFor="regular" className="ml-3">Caretaker</label>
         </div>
@@ -124,6 +141,8 @@ function Login() {
           Login
         </button>
       </div>
+      {/* <Toaster position="top-center" /> */}
+      <ToastContainer position="top-center" autoClose={500} theme="dark"/>
     </form>
   );
 }

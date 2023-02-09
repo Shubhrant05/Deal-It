@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
+import PieChart from "./piechart";
 import IsResolved from "./resolvedTab";
 
 // import Sonnet from '../../components/Sonnet';
@@ -13,6 +14,7 @@ function ComplaintsCategory() {
   const [plumbing, setPlumbing] = useState([]);
   const [electricity, setElectricity] = useState([]);
   const [carpenter, setCarpenter] = useState([]);
+  const hall=sessionStorage.getItem("Hallname")
 
   const getData = () => {
     try {
@@ -20,11 +22,11 @@ function ComplaintsCategory() {
         .get(`${ENDPOINT}/allcomplaints`)
         .then((res) => {
           setData(res.data);
-          setPlumbing(res.data.filter((ele) => ele.category === "Plumbing"));
+          setPlumbing(res.data.filter((ele) => (ele.category === "Plumbing" || ele.category==="plumbing") && (ele.hallname===hall)));
           setElectricity(
-            res.data.filter((ele) => ele.category === "Electricity")
+            res.data.filter((ele) => (ele.category === "Electricity" || ele.category === "electricity") && (ele.hallname===hall))
           );
-          setCarpenter(res.data.filter((ele) => ele.category === "Carpenter"));
+          setCarpenter(res.data.filter((ele) => (ele.category === "Carpenter" || ele.category === "carpenter") && (ele.hallname===hall)));
         })
         .catch((err) => console.log(err));
     } catch (err) {
@@ -33,7 +35,7 @@ function ComplaintsCategory() {
   };
   useEffect(() => {
     getData();
-  }, []);
+  }, [data]);
   return (
     <Container className="mt-5">
       <Tabs
@@ -96,6 +98,7 @@ function ComplaintsCategory() {
           )}
         </Tab>
       </Tabs>
+      <PieChart plumbing={plumbing.length} electricity={electricity.length} carpenter={carpenter.length}/>
     </Container>
   );
 }

@@ -6,7 +6,8 @@ const ENDPOINT = "http://localhost:4000"
 
 const Dashboard = () => {
     const [data, setData] = useState([])
-    
+    const hall=sessionStorage.getItem("Hallname")
+    const person=sessionStorage.getItem("Person")
     const getData = () => {
         try {
             axios.get(`${ENDPOINT}/allcomplaints`)

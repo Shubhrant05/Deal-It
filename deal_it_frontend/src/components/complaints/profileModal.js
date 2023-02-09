@@ -16,7 +16,7 @@ function ProfileModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <ProfileTable/>
+        <ProfileTable data={props.data}/>
       </Modal.Body>
     </Modal>
   );

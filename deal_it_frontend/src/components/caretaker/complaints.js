@@ -4,6 +4,7 @@ import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/esm/Button';
 import { FiArrowDownCircle, FiArrowUpCircle } from 'react-icons/fi'
+import Pagination from "../pagination";
 
 function CustomToggle({ children, eventKey }) {
 
@@ -28,12 +29,12 @@ function CustomToggle({ children, eventKey }) {
   
 
 function Complaints({ ...props }) {
-  const data = props.data;
+  const complaints = props.data;
 //   console.log(data);
   return (
     <>
-      <section className="flex flex-col gap-3 mt-5">
-        {data.map((ele) => {
+      <section className="flex flex-col gap-3 mt-5 mb-10">
+        {complaints.map((ele) => {
           return (
             <Accordion defaultActiveKey="0" className="w-full">
               <Card
@@ -71,6 +72,7 @@ function Complaints({ ...props }) {
             </Accordion>
           );
         })}
+        {/* <Pagination complaints={complaints}/> */}
       </section>
     </>
   );

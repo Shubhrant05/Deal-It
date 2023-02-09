@@ -41,10 +41,10 @@ function ComplaintForm(props) {
     <form onSubmit={submitHandler}> 
       <Form.Select aria-label="Default select example" name="hallname" onChange={updateData}>
       <option>Select Hostel Name</option>
-      <option value="aryabhatta">Aryabhatta Hostel</option>
-      <option value="vashishta">Vashishta Hostel</option>
-      <option value="vivekananda">Vivekananda Hostel</option>
-      <option value="saraswati">Saraswati Hostel</option>
+      <option value="Aryabhatta">Aryabhatta</option>
+      <option value="Vashishta">Vashishta</option>
+      <option value="Vivekananda">Vivekananda</option>
+      <option value="Saraswati">Saraswati</option>
     </Form.Select>
       <Form.Select aria-label="Default select example" name="category" onChange={updateData} className="mb-3 mt-3">
       <option>Select Complaint Category</option>
