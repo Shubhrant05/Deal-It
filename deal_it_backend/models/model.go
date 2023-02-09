@@ -33,5 +33,6 @@ type Caretaker struct {
 	Email       string   `json:"email"`
 	Password      string   `json:"password"`
 	HallName      string   `json:"hallname"`
+	MobileNo      string   `json:"mobileno"`
 	Notifications []string `json:"notifications"`
 }

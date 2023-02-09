@@ -33,13 +33,16 @@ func Connection(connUrl string) {
 
 }
 
-func HomePage(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("<h1>Welcome to deal-it backend!</h1>"))
-}
+
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+   (*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+   (*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
 }
-
+func HomePage(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
+	w.Write([]byte("<h1>Welcome to deal-it backend!</h1>"))
+}
 // Controller for getting all users
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	var users []models.Student
@@ -59,7 +62,44 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(users)
 }
+func GetOneStudent(w http.ResponseWriter,r *http.Request){
+	enableCors(&w)
 
+	var user models.Student
+	err:=json.NewDecoder(r.Body).Decode(&user)
+
+	if err!=nil{
+		log.Fatal(err)
+	}
+	var student models.Student
+	filter:=bson.D{{"email",user.Email}}
+	err=studentCollection.FindOne(context.Background(),filter).Decode(&student)
+
+	if err!=nil{
+		json.NewEncoder(w).Encode(401)
+	}else{
+		json.NewEncoder(w).Encode(student)
+	}
+}
+func GetOneCaretaker(w http.ResponseWriter,r *http.Request){
+	enableCors(&w)
+
+	var user models.Caretaker
+	err:=json.NewDecoder(r.Body).Decode(&user)
+
+	if err!=nil{
+		log.Fatal(err)
+	}
+	var caretaker models.Caretaker
+	filter:=bson.D{{"email",user.Email}}
+	err=caretakerCollection.FindOne(context.Background(),filter).Decode(&caretaker)
+
+	if err!=nil{
+		json.NewEncoder(w).Encode(401)
+	}else{
+		json.NewEncoder(w).Encode(caretaker)
+	}
+}
 // Controller for verifying login credentials
 func VerifyUser(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
@@ -74,9 +114,10 @@ func VerifyUser(w http.ResponseWriter, r *http.Request) {
 	filter := bson.D{{"email", credentials.Email}}
 	err = studentCollection.FindOne(context.Background(), filter).Decode(&data)
 	if err != nil {
-		// resp["status"] = "404"
-		// resp["message"] = "Signup Unsuccessful"
-		json.NewEncoder(w).Encode(401)
+		resp["status"] = "404"
+		resp["message"] = "Student doesn't exist!"
+		// fmt.Println(err)
+		json.NewEncoder(w).Encode(resp)
 	} else {
 		if data.Password == credentials.Password {
 			// resp["status"] = "200"
@@ -88,13 +129,49 @@ func VerifyUser(w http.ResponseWriter, r *http.Request) {
 			// json.NewEncoder(w).Encode()
 			
 		} else {
-			// resp["status"] = "401"
-			// resp["message"] = "Signup Unsuccessful"
-			json.NewEncoder(w).Encode(400)
+			resp["status"] = "401"
+			resp["message"] = "Wrong Password"
+			json.NewEncoder(w).Encode(resp)
 		}
 	}
 	// res, err := json.Marshal(resp)
 	// w.Write(res)
+}
+
+func VerifyCaretaker(w http.ResponseWriter,r *http.Request){
+	enableCors(&w);
+	resp:=make(map[string]string)
+	var credentials models.Caretaker
+	err:=json.NewDecoder(r.Body).Decode(&credentials)
+
+	if err!=nil{
+		log.Fatal(err)
+	}
+	var data models.Caretaker
+	filter:=bson.D{{"email",credentials.Email}}
+
+	err=caretakerCollection.FindOne(context.Background(),filter).Decode(&data)
+	if err != nil {
+		resp["status"] = "404"
+		resp["message"] = "Caretaker doesn't exist!"
+		// fmt.Println(err)
+		json.NewEncoder(w).Encode(resp)
+	} else {
+		if data.Password == credentials.Password {
+			
+			resp["status"]="200"
+			resp["name"]=data.Name
+			resp["hallname"]=data.HallName
+			json.NewEncoder(w).Encode(resp)
+			
+			
+		} else {
+			resp["status"] = "401"
+			resp["name"]="Wrong Password"
+			json.NewEncoder(w).Encode(resp)
+		}
+	}
+
 }
 
 // Controller for registering new user
@@ -117,16 +194,17 @@ func RegisterStudent(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		resp["status"] = "200"
-		resp["message"] = "Authorized"
-		json.NewEncoder(w).Encode(insertData.InsertedID)
+		resp["message"] = "Account created successfully!"
+		fmt.Println(insertData.InsertedID)
+		json.NewEncoder(w).Encode(resp)
 	} else {
 		resp["status"] = "401"
-		resp["message"] = "Unauthorized"
-		json.NewEncoder(w).Encode("User already exists!")
+		resp["message"] = "User already exists!"
+		json.NewEncoder(w).Encode(resp)
 	}
-	res, err := json.Marshal(resp)
+	// res, err := json.Marshal(resp)
 
-	w.Write(res)
+	// w.Write(res)
 }
 
 // Controller to post new complaint
@@ -189,4 +267,26 @@ func GetAllComplaints(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(dueComplaints)
+}
+func UpdateProfile(w http.ResponseWriter,r *http.Request){
+	enableCors(&w)
+
+	var data models.Student
+	err:=json.NewDecoder(r.Body).Decode(&data)
+	if err!=nil{
+		log.Fatal(err)
+	}
+	json.NewEncoder(w).Encode(data)
+	// var user models.Student
+	filter:=bson.D{{"email",data.Email}}
+	update:=bson.D{{"$set",bson.D{{"name",data.Name},{"mobileno",data.MobileNo}}}}
+	result,err:=studentCollection.UpdateOne(context.Background(),filter,update)
+
+
+
+	if err!=nil{
+		log.Fatal(err)
+	}else{
+		json.NewEncoder(w).Encode(result)
+	}
 }
