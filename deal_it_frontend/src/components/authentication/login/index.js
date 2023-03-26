@@ -136,8 +136,9 @@ function Login() {
       <div
         className="w-full h-12  p-2 flex rounded-3xl justify-center"
         style={{ backgroundColor: "rgb(58,177,155)" }}
+        
       >
-        <button className="text-center" onClick={submitHandler}>
+        <button className="text-center" onClick={submitHandler} style={{width:"inherit"}}>
           Login
         </button>
       </div>

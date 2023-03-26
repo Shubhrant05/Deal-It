@@ -21,6 +21,7 @@ function ComplaintsCategory() {
       axios
         .get(`${ENDPOINT}/allcomplaints`)
         .then((res) => {
+          console.log(res)
           setData(res.data);
           setPlumbing(res.data.filter((ele) => (ele.category === "Plumbing" || ele.category==="plumbing") && (ele.hallname===hall)));
           setElectricity(
@@ -35,7 +36,7 @@ function ComplaintsCategory() {
   };
   useEffect(() => {
     getData();
-  }, [data]);
+  }, []);
   return (
     <Container className="mt-5">
       <Tabs
